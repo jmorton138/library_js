@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+        <link rel="stylesheet" href="styles.css">
+        <title>Library</title>
+    </head>
+    <body>
+        <button class="add-book btn">Add Book</button>
+        <div class="container">
+            <h2>My Library</h2>
+            <div class="books">
+            </div>
+   
+            <div class="form-popup">
+                <form id="add-book-form" class="form-container">
+                    <h3>Add Book</h3>
+                    <input type="text" placeholder="Title" name="title" required>
+                    <input type="text" placeholder="Author" name="author" required>
+                    <input type="number" placeholder="Number of pages" name="pages" required>
+                    <div class="check">
+                        <label>      
+                            <input id="read-checkbox" type="checkbox" name="has-read">
+                            <span class="checkmark">I've read this book </span>
+                        </label>
+                    
+                    </div>
+                    <div class="btns">               
+                        <button type="submit" class="btn">Submit</button>
+                        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    </div>
+                  </form>
+
+            </div>
+        </div>
+        <script src="library.js" async defer></script>
+    </body>
+</html>

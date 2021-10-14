@@ -1,0 +1,77 @@
+body {
+    background-color: #f4f4f4;
+}
+.form-popup {
+    display: none;
+    position: absolute;
+    top: 60px;
+    left: 400px;
+    border: 3px solid #f1f1f1; 
+}
+
+.form-container {
+    max-width: 300px;
+    padding: 30px;
+    background-color: white;
+    box-shadow: -10px 10px 10px grey;
+  }
+
+  .books .btn {
+      width: 40%;
+      margin: 5px 10px;
+      text-align: center;
+      
+  }
+
+  .card {
+    width: 400px;
+    box-shadow: -10px 10px 10px grey;
+  }
+
+  .del-btn {
+      position: absolute;
+      bottom: 5px;
+  }
+
+  .toggle-btn {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+  }
+
+  .add-book {
+      float: right;
+      margin-right: 30px;
+  }
+
+
+  h5, h6 {
+    text-align: left;
+    margin-left: 10px;
+    padding-top: 0px;
+  }
+
+  #title {
+      padding-top: 20px;
+
+  }
+
+  .card {
+      display: inline-block;
+      margin-right: 40px;
+  
+      height: 250px;
+      
+  }
+
+  .check {
+      padding: 10px 0px;
+  }
+
+input[type="checkbox"] {
+    float: right ;
+}
+
+
+
+  
