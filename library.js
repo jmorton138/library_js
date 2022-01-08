@@ -1,29 +1,92 @@
 document.addEventListener('DOMContentLoaded', function() {
-    displayLibrary()
+
+    let library = new myLibrary();
+
+    let theHobbit = new Book("The Hobbit", "JRR Tokien", 295)
+    let warAndPeace = new Book("War and Peace", "Fyodor Dostoyevsky", 800)
+    let nineteenEightyFour = new Book("1984", "George Orwell", 300)
+    library.inventory.push(theHobbit)
+    library.inventory.push(warAndPeace)
+    library.inventory.push(nineteenEightyFour)
+    library.displayLibrary()
     bookBtn = document.querySelector('.add-book')
     bookBtn.addEventListener('click', () => (displayForm(bookBtn)));
     var addBookForm = document.querySelector('.form-container')
     addBookForm.addEventListener('submit', (event) => {
-        addBookToLibrary(); 
+        let newBook = bookFormData();
+        library.addBookToLibrary(newBook); 
     });
 
 })
 
-function Book(title, author, pages, read = false) {
-    this.title = title
-    this.author = author
-    this.pages = pages
-    this.read = read
-    this.info = function() {
-        return `${title} by ${author}, ${pages} pages ${read == true ? 'have read': 'not read yet'}`;
+class Book {
+    constructor(title, author, pages, read = false) {
+        this.title = title
+        this.author = author
+        this.pages = pages
+        this.read = read
+        this.info = function() {
+            return `${title} by ${author}, ${pages} pages ${read == true ? 'have read': 'not read yet'}`;
+        }
+    }
+}
+
+class myLibrary {
+    constructor(inventory = []) {
+        this.inventory = []
+    }
+    get inventory() {
+        return this._inventory;
+    }
+
+    set inventory(value) {
+        return this._inventory = value;
+    }
+
+    displayLibrary() {
+        let books = document.querySelector('.books');
+        books.innerHTML = '';
+        this.inventory.forEach(item => {
+            let index = this.inventory.indexOf(item)
+            let book = document.createElement('div')
+            book.className = "card";
+            let deleteBook = document.createElement('button');
+            deleteBook.innerHTML = "delete"
+            deleteBook.className = "btn del-btn"
+            book.dataset.index = index
+            deleteBook.onclick = function() { removeBookFromLibrary(); };
+            let toggleRead = document.createElement('button');
+            toggleRead.innerHTML = 'read?';
+            toggleRead.className = "btn toggle-btn"
+            toggleRead.onclick = function() { toggleReadStatus(); };
+            book.innerHTML = `
+            <h5 id="title">Title: ${item.title}</h5>
+            <h5>Author: ${item.author}</h5>
+            <h6>Pages: ${item.pages}</h6>
+            <h6>${item.read == true ? "Read" : "Not read"}</h6>`;
+            books.appendChild(book)
+            book.appendChild(deleteBook)
+            book.appendChild(toggleRead)
+        });
+    }
+
+    addBookToLibrary(newBook) {
+        this.inventory.push(newBook);
+        const form = document.getElementById('add-book-form')
+        form.reset();
+        closeForm();
+        this.displayLibrary();
+    }
+
+    removeBookFromLibrary() {
+        index = event.target.parentElement.dataset.index
+        this.inventory.splice(index, 1);
+        this.displayLibrary()
     }
 
 }
 
-let myLibrary = [];
-
-
-function addBookToLibrary() {
+function bookFormData() {
     event.preventDefault();
     const form = document.getElementById('add-book-form')
     var title = form.elements['title']
@@ -33,17 +96,8 @@ function addBookToLibrary() {
     title = title.value
     author = author.value
     pages = pages.value
-    newBook = new Book(title, author, pages, checkbox)
-    myLibrary.push(newBook);
-    form.reset();
-    closeForm();
-    displayLibrary();
-}
+    return new Book(title, author, pages, checkbox)
 
-function removeBookFromLibrary() {
-    index = event.target.parentElement.dataset.index
-    myLibrary.splice(index, 1);
-    displayLibrary()
 }
 
 function displayForm(bookBtn) {
@@ -55,35 +109,8 @@ function closeForm() {
     document.querySelector('.form-popup').style.display = "none";
     document.querySelector('.add-book').style.display = "block"
 
-
 }
 
-function displayLibrary() {
-    let books = document.querySelector('.books');
-    books.innerHTML = '';
-    myLibrary.forEach(item => {
-        let index = myLibrary.indexOf(item)
-        let book = document.createElement('div')
-        book.className = "card";
-        let deleteBook = document.createElement('button');
-        deleteBook.innerHTML = "delete"
-        deleteBook.className = "btn del-btn"
-        book.dataset.index = index
-        deleteBook.onclick = function() { removeBookFromLibrary(); };
-        let toggleRead = document.createElement('button');
-        toggleRead.innerHTML = 'read?';
-        toggleRead.className = "btn toggle-btn"
-        toggleRead.onclick = function() { toggleReadStatus(); };
-        book.innerHTML = `
-        <h5 id="title">Title: ${item.title}</h5>
-        <h5>Author: ${item.author}</h5>
-        <h6>Pages: ${item.pages}</h6>
-        <h6>${item.read == true ? "Read" : "Not read"}</h6>`;
-        books.appendChild(book)
-        book.appendChild(deleteBook)
-        book.appendChild(toggleRead)
-    });
-}
 
 function toggleReadStatus() {
     let index = event.target.parentElement.dataset.index
@@ -99,10 +126,3 @@ function toggleReadStatus() {
 
 
 
-
-theHobbit = new Book("The Hobbit", "JRR Tokien", 295)
-warAndPeace = new Book("War and Peace", "Fyodor Dostoyevsky", 800)
-nineteenEightyFour = new Book("1984", "George Orwell", 300)
-myLibrary.push(theHobbit)
-myLibrary.push(warAndPeace)
-myLibrary.push(nineteenEightyFour)
