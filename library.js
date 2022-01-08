@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     bookBtn.addEventListener('click', () => (displayForm(bookBtn)));
     var addBookForm = document.querySelector('.form-container')
     addBookForm.addEventListener('submit', (event) => {
-        let newBook = bookFormData();
+        let newBook = processBookFormData();
         library.addBookToLibrary(newBook); 
     });
 
@@ -29,6 +29,17 @@ class Book {
             return `${title} by ${author}, ${pages} pages ${read == true ? 'have read': 'not read yet'}`;
         }
     }
+
+    toggleReadStatus(library) {
+    if (this.read === false) {
+        this.read = true
+    } else {
+        this.read = false
+    }
+    console.log(library)
+    library.displayLibrary();
+}
+
 }
 
 class myLibrary {
@@ -46,7 +57,10 @@ class myLibrary {
     displayLibrary() {
         let books = document.querySelector('.books');
         books.innerHTML = '';
+        let library = this;
         this.inventory.forEach(item => {
+            console.log(item)
+            console.log(this)
             let index = this.inventory.indexOf(item)
             let book = document.createElement('div')
             book.className = "card";
@@ -54,11 +68,11 @@ class myLibrary {
             deleteBook.innerHTML = "delete"
             deleteBook.className = "btn del-btn"
             book.dataset.index = index
-            deleteBook.onclick = function() { removeBookFromLibrary(); };
+            deleteBook.onclick = function() { library.removeBookFromLibrary(event); };
             let toggleRead = document.createElement('button');
             toggleRead.innerHTML = 'read?';
             toggleRead.className = "btn toggle-btn"
-            toggleRead.onclick = function() { toggleReadStatus(); };
+            toggleRead.onclick = function() { item.toggleReadStatus(library); };
             book.innerHTML = `
             <h5 id="title">Title: ${item.title}</h5>
             <h5>Author: ${item.author}</h5>
@@ -78,15 +92,15 @@ class myLibrary {
         this.displayLibrary();
     }
 
-    removeBookFromLibrary() {
-        index = event.target.parentElement.dataset.index
+    removeBookFromLibrary(event) {
+        let index = event.target.parentElement.dataset.index
         this.inventory.splice(index, 1);
         this.displayLibrary()
     }
 
 }
 
-function bookFormData() {
+function processBookFormData() {
     event.preventDefault();
     const form = document.getElementById('add-book-form')
     var title = form.elements['title']
@@ -112,15 +126,6 @@ function closeForm() {
 }
 
 
-function toggleReadStatus() {
-    let index = event.target.parentElement.dataset.index
-    if (myLibrary[index].read === false) {
-        myLibrary[index].read = true
-    } else {
-        myLibrary[index].read = false
-    }
-    displayLibrary();
-}
 
 
 
